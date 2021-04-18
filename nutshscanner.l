@@ -71,7 +71,12 @@ pwd                   { return PWD;}
                         return STRING;
                     };
                      }
-
+"~"                 {
+                    char *yycopy = strdup( getenv("HOME") );
+                    for ( int i = strlen(getenv("HOME")) - 1; i >= 0; --i )
+                            unput( yycopy[i] );
+                    free(yycopy);
+                    }
 
 
 %%

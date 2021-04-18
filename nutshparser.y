@@ -220,6 +220,7 @@ void runLS(char * args){
 		sprintf(cmd, "ls -%s", args);
 		printf("\n%s\n",cmd);
 		system(cmd);
+		free(cmd);
 	}
 }
 
