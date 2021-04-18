@@ -199,7 +199,7 @@ int runUnsetENV(char * variable){
 
 int runUnalias(char * name){
 	for(int i=0; i < 128; i++){
-		if(strcmp(aliasTable.name[i], name) == 0){
+		if(strcmp(aliasTable.word[i], name) == 0){
 			strcpy(aliasTable.name[i], "");
 			strcpy(aliasTable.word[i], "");
 			return 1;

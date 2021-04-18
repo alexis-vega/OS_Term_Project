@@ -910,13 +910,20 @@ case 17:
 YY_RULE_SETUP
 #line 54 "nutshscanner.l"
 {if(ifAlias(yytext)) {
-                        printf("yytextalias: %s\n", yytext);
+                        //printf("yytextalias: %s\n", yytext);
                         //source: https://www.cs.princeton.edu/~appel/modern/c/software/flex/flex.html
                            char *yycopy = strdup( subAliases(yytext) );
                            for ( int i = strlen(subAliases(yytext)) - 1; i >= 0; --i )
                                unput( yycopy[i] );
                            free( yycopy );
-                    } else {
+                    }
+                    else if(getenv(yytext)){
+                        char *yycopy = strdup(getenv(yytext));
+                        for ( int i = strlen(getenv(yytext)) - 1; i >= 0; --i )
+                               unput( yycopy[i] );
+                        free( yycopy );
+                    }
+                    else {
                         //printf("yytext: %s\n", yytext);
                         yylval.string = strdup(yytext);
                         return STRING;
@@ -925,10 +932,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 70 "nutshscanner.l"
+#line 77 "nutshscanner.l"
 ECHO;
 	YY_BREAK
-#line 932 "lex.yy.c"
+#line 939 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(string_condition):
 	yyterminate();
@@ -1946,5 +1953,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 70 "nutshscanner.l"
+#line 77 "nutshscanner.l"
 

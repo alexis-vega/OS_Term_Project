@@ -52,13 +52,20 @@ pwd                   { return PWD;}
 "\n"		        { return END; }
 [\"]                 { BEGIN(string_condition); }
 {CHAR}+              {if(ifAlias(yytext)) {
-                        printf("yytextalias: %s\n", yytext);
+                        //printf("yytextalias: %s\n", yytext);
                         //source: https://www.cs.princeton.edu/~appel/modern/c/software/flex/flex.html
                            char *yycopy = strdup( subAliases(yytext) );
                            for ( int i = strlen(subAliases(yytext)) - 1; i >= 0; --i )
                                unput( yycopy[i] );
                            free( yycopy );
-                    } else {
+                    }
+                    else if(getenv(yytext)){
+                        char *yycopy = strdup(getenv(yytext));
+                        for ( int i = strlen(getenv(yytext)) - 1; i >= 0; --i )
+                               unput( yycopy[i] );
+                        free( yycopy );
+                    }
+                    else {
                         //printf("yytext: %s\n", yytext);
                         yylval.string = strdup(yytext);
                         return STRING;
