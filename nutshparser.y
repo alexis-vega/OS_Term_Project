@@ -57,6 +57,7 @@ cmd_line :
 	| UNSETENV STRING 			{runUnsetENV($2);}
 	| ECHOO STRING 				{runEcho($2);}
 	| PWD 						{getPWD();}
+	| END						{return 1;}
 	;
 
 %%

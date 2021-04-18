@@ -59,7 +59,7 @@ pwd                   { return PWD;}
                                unput( yycopy[i] );
                            free( yycopy );
                     } else {
-                        printf("yytext: %s\n", yytext);
+                        //printf("yytext: %s\n", yytext);
                         yylval.string = strdup(yytext);
                         return STRING;
                     };
