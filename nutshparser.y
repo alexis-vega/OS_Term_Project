@@ -23,7 +23,7 @@ int runSetENV(char * variable, char * word);
 int runPrintENV();
 int runUnsetENV(char * variable);
 int runUnalias(char * name);
-void runLS(void);
+void runLS(char * args);
 int runEcho(char * str);
 void getPWD(void);
 
@@ -40,6 +40,7 @@ void getPWD(void);
 cmds :
 	cmd_line END						{return 1;}
 	| cmd_line PIPE cmd_line END		{return 1;}
+	END									{return 1;}
 	;
 
 cmd_line :
@@ -47,7 +48,8 @@ cmd_line :
 	| CD STRING         		{
 								runCD($2);
 								}
-	| LS 						{runLS();}
+	| LS 						{runLS(NULL);}
+	| LS STRING					{runLS($2);}
 	| ALIAS STRING STRING 		{runSetAlias($2, $3);}
 	| UNALIAS STRING 			{runUnalias($2);}
 	| SETENV STRING STRING 		{runSetENV($2, $3);}
@@ -194,7 +196,6 @@ int runUnsetENV(char * variable){
 	return 1;
 }
 
-//Not working (or does alias not work?)
 int runUnalias(char * name){
 	for(int i=0; i < 128; i++){
 		if(strcmp(aliasTable.name[i], name) == 0){
@@ -207,11 +208,20 @@ int runUnalias(char * name){
 	return 0;
 }
 
-void runLS(void){
-	system("ls");
+void runLS(char * args){
+	if(args == NULL){
+		system("ls");
+	} else {
+		if (args[0] == '-') 
+   		 memmove(args, args+1, strlen(args));
+
+		char * cmd = malloc(sizeof(char) * strlen(args));
+		sprintf(cmd, "ls -%s", args);
+		printf("\n%s\n",cmd);
+		system(cmd);
+	}
 }
 
-//Need to fix so that spaces can be included in a string
 int runEcho(char * str){
 	printf("%s\n", str);
 }
