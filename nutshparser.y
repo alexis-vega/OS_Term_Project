@@ -38,7 +38,7 @@ void getPWD(void);
 %%
 
 cmds :
-	cmd_line END						{execute(); return 1;}
+	cmd_line END						{return 1;}
 	| cmd_line PIPE cmd_line END		{return 1;}
 	;
 
